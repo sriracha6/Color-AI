@@ -6,7 +6,6 @@ namespace ActualColorAI
     public class Network
     {
         Layer[] layers;
-        double inputValue;
 
         public Network(params int[] layerSizes)
         {
@@ -56,11 +55,6 @@ namespace ActualColorAI
             return record;
         }
 
-        public void Init(double randomValue)
-        {
-            inputValue = randomValue;
-        }
-
         /*public void Learn(double learnRate)
         {
             const double h = 0.00001;
@@ -101,6 +95,39 @@ namespace ActualColorAI
         {
             foreach(Layer layer in layers)
                 layer.ApplyGradients(learningRate);
+        }
+
+        public void LearnFAST(DataPoint[] batch, double learnRate)
+        {
+            // backpropgated
+            foreach(DataPoint d in batch)
+            {
+                UpdateAllGradients(d);
+            }
+
+            ApplyAllGradients(learnRate / batch.Length);
+            ZeroGradients();
+        }
+
+        public void ZeroGradients()
+        {
+            foreach(Layer l in layers)
+            {
+                l.ZeroGradients();
+            }
+        }
+
+        public void UpdateAllGradients(DataPoint d)
+        {
+            CalcOutputs(d.inputs);
+            Layer output = layers[layers.Length - 1];
+            double[] nodeValues = output.CalcOutLayerNodes(d.expectedOutputs);
+            output.UpdateGradients(nodeValues);
+            for(int i = layers.Length - 2; i >= 0; i--)
+            {
+                nodeValues = layers[i].CalcHiddenLayerValues(layers[i + 1], nodeValues);
+                layers[i].UpdateGradients(nodeValues);
+            }
         }
     }
 }

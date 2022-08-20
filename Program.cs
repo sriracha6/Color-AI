@@ -43,8 +43,10 @@ namespace ActualColorAI
 			hlsize.Add(3); // INPUT
 			foreach(string s in hlsizestr) hlsize.Add(int.Parse(s)); 
 			hlsize.Add(2); // OUTPUT
-			Console.WriteLine("Learning Iterations (Recommended - 2500+): ");
+			Console.WriteLine("Learning Iterations (Recommended - 10000+): ");
 			int iterations = int.Parse(Console.ReadLine());
+			Console.WriteLine("Use Backpropagation (Recommended - True): ");
+			bool isBackProp = bool.Parse(Console.ReadLine());
 
 			Network n = new Network(hlsize.ToArray());
 			//Console.WriteLine("Learn Iterations: ");
@@ -56,7 +58,10 @@ namespace ActualColorAI
 			for(int it = 0; it < iterations; it++)
 			{
 				DataPoint[] miniBatch = accesableData.ToList().OrderBy(x=>Guid.NewGuid()).Take(accesableData.Length / 10).ToArray();
-				n.Learn(miniBatch, learnRate / 100D);  // we need to only give it access to some of the data so the rest is used for testing   
+				if(!isBackProp)
+					n.Learn(miniBatch, learnRate / 100D);  // we need to only give it access to some of the data so the rest is used for testing   
+				else
+					n.LearnFAST(miniBatch, learnRate / 100D);
 			}
 			
 			Console.WriteLine("===========");
@@ -71,10 +76,10 @@ namespace ActualColorAI
 				Console.WriteLine("===========");
 			}
 			Console.WriteLine("COST: ".Color(System.Drawing.Color.Red) + n.Cost(testData) + " (Lower values = Better accuracy)");
+			Console.WriteLine("===========");
 
 			for(;;)
 			{
-				Console.WriteLine("===========");
 				Console.WriteLine("Enter a color input (r,g,b):");
 				string inp = Console.ReadLine();
 				string[] inputs = inp.Split(',');
