@@ -63,8 +63,6 @@ namespace ActualColorAI
 			foreach(DataPoint d in testData)
 			{
 				int answer = n.Answer(d.inputs);
-				//foreach(double ds in n.CalcOutputs(d.inputs))
-				//	Console.WriteLine(ds);	// if i remove this  it doesnt work. what the fuck?
 				var hColor = System.Drawing.Color.FromArgb((int)(d.inputs[0]*255), (int)(d.inputs[1]*255), (int)(d.inputs[2]*255));
 				var s = (string)(" Hello ".Highlight(hColor));
 				Console.WriteLine(s.Color(answer == 0 ? System.Drawing.Color.Black : System.Drawing.Color.White));
@@ -72,10 +70,23 @@ namespace ActualColorAI
 				Console.WriteLine("Expected: " + (d.expectedOutputs[0] == 1 ? "Black" : "White"));
 				Console.WriteLine("===========");
 			}
-			Console.WriteLine("COST: ".Color(System.Drawing.Color.Red) + n.Cost(testData) + " (Lower values = Better performance)");
+			Console.WriteLine("COST: ".Color(System.Drawing.Color.Red) + n.Cost(testData) + " (Lower values = Better accuracy)");
 
-			Console.WriteLine("Press any key to quit.");
-			Console.ReadKey();
+			for(;;)
+			{
+				Console.WriteLine("===========");
+				Console.WriteLine("Enter a color input (r,g,b):");
+				string inp = Console.ReadLine();
+				string[] inputs = inp.Split(',');
+				var data = new double[] { (int.Parse(inputs[0]))/255D, (int.Parse(inputs[1]))/255D, (int.Parse(inputs[2]))/255D };
+
+				int answer = n.Answer(data);
+				var hColor = System.Drawing.Color.FromArgb(int.Parse(inputs[0]), int.Parse(inputs[1]), int.Parse(inputs[2]));
+				var s = (string)(" Hello ".Highlight(hColor));
+				Console.WriteLine(s.Color(answer == 0 ? System.Drawing.Color.Black : System.Drawing.Color.White));
+				Console.WriteLine("Confidence: " + (int)(n.CalcOutputs(data)[answer] * 100) + "%");
+				Console.WriteLine("===========");
+			}
 		}
 
 		public static DataPoint ParseData(string path)
