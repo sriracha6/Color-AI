@@ -6,3 +6,20 @@ It simulates the human brain. Next time I'm doing NEAT. This is overly complicat
 
 ![screenshot](Screenies/screeny1.png)
 ![screenshot](Screenies/screeny2.png)
+
+Features:
+
+```csharp
+
+[X] DataPoint
+[X] Settings
+[X] Basic Core
+[X] BackPropogation
+
+[ ] MultiThreading // Pipe Dream
+
+Library Mode
+[ ] Removed Bloat (Only backpropogation)
+[ ] Usage like:
+     new Network(5,2,5).Setup(activation...).Train(batchsizepercent) ... etc
+```
