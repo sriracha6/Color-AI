@@ -9,17 +9,21 @@ It simulates the human brain. Next time I'm doing NEAT. This is overly complicat
 
 Features:
 
-```csharp
+```
 
 [X] DataPoint
 [X] Settings
 [X] Basic Core
 [X] BackPropogation
 
-[ ] MultiThreading // Pipe Dream
+[ ] MultiThreading (Pipe Dream)
 
-Library Mode
-[ ] Removed Bloat (Only backpropogation)
-[ ] Usage like:
+Library Mode (coming soon)
+    [ ] Removed Bloat (Only backpropogation)
+    [ ] Usage like:
+```
+```csharp
+
      new Network(5,2,5).Setup(activation...).Train(batchsizepercent) ... etc
+
 ```
