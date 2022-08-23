@@ -16,7 +16,8 @@ Features:
 [X] Basic Core
 [X] BackPropogation
 
-[ ] Save AI State 
+[X] Save AI State 
+[X] Load AI State
 [ ] MultiThreading (Pipe Dream)
 
 Library Mode (coming soon)
@@ -25,6 +26,6 @@ Library Mode (coming soon)
 ```
 ```csharp
 
-     new Network(5,2,5).Setup(activation...).Train(batchsizepercent) ... etc
+     new Network(5,2,5).Setup(activation...).Train(batchsizepercent).Save() ... etc
 
 ```

@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ActualColorAI
 {
-    public class Network
+    public partial class Network
     {
         Layer[] layers;
 
@@ -13,6 +14,7 @@ namespace ActualColorAI
             for(int i = 0; i < layers.Length; i++)
                 layers[i] = new Layer(layerSizes[i], layerSizes[i+1]);
         }
+        public Network(){}
 
         public double[] CalcOutputs(double[] inputs)
         {

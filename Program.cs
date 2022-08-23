@@ -19,6 +19,7 @@ namespace ActualColorAI
 	{
 		public static void Main(string[] args)
 		{
+			Network n = null;
 			if(Directory.GetFiles("./Data").Length == 0)
 				GenerateData();
 
@@ -31,6 +32,9 @@ namespace ActualColorAI
 				totalData[i] = ParseData(file);
 				i++;
 			}
+			Console.WriteLine("Read from local STATE.brain file? (True/False)");
+			bool sexy = bool.Parse(Console.ReadLine()); // im very lazy. dont even wanna add a utility function im that lazy
+			if(sexy) { n = Network.LoadState("STATE.brain"); goto end; }
 			Console.WriteLine("Learn Rate Percent (Recommended - 20): ");
 			int learnRate = int.Parse(Console.ReadLine());
 			Console.WriteLine("Sample Size Percent (Recommended - 80): ");
@@ -47,8 +51,7 @@ namespace ActualColorAI
 			int iterations = int.Parse(Console.ReadLine());
 			Console.WriteLine("Use Backpropagation (Recommended - True): ");
 			bool isBackProp = bool.Parse(Console.ReadLine());
-
-			Network n = new Network(hlsize.ToArray());
+			n = new Network(hlsize.ToArray());
 			//Console.WriteLine("Learn Iterations: ");
 			//int iterations = int.Parse(Console.ReadLine());
 
@@ -77,7 +80,8 @@ namespace ActualColorAI
 			}
 			Console.WriteLine("COST: ".Color(System.Drawing.Color.Red) + n.Cost(testData) + " (Lower values = Better accuracy)");
 			Console.WriteLine("===========");
-
+			n.SaveState("./STATE.brain");
+			end:
 			for(;;)
 			{
 				Console.WriteLine("Enter a color input (r,g,b):");
