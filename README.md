@@ -16,6 +16,7 @@ Features:
 [X] Basic Core
 [X] BackPropogation
 
+[ ] Save AI State 
 [ ] MultiThreading (Pipe Dream)
 
 Library Mode (coming soon)
