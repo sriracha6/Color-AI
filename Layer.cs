@@ -16,17 +16,17 @@ namespace ActualColorAI
 
         public static string activation = "sigmoid";
         
-        public Layer(int numin, int numout)
+        public Layer(int numin, int numout, bool randomWeights=true)
         {
             this.numNodesIn = numin;
             this.numNodesOut = numout;
             
-            costGradientW = new double[numin, numout];
-            costGradientB = new double[numout];
-            weights = new double[numin, numout];
-            biases = new double[numout]; 
-            weightedInputs = new double[numout];
-            InitRandomWeights();
+            this.costGradientW = new double[numin, numout];
+            this.costGradientB = new double[numout];
+            this.weights = new double[numin, numout];
+            this.biases = new double[numout]; 
+            this.weightedInputs = new double[numout];
+            if(randomWeights) InitRandomWeights();
         }
         
         public double[] CalculateOutputs(double[] inputs)

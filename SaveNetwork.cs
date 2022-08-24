@@ -14,10 +14,9 @@ namespace ActualColorAI
         {
             List<string> o = new List<string>();
             string s = "";
+            o.Add(Layer.activation);
             for(int i = 0; i < layers.Length; i++)
-            {
                 s += layers[i].numNodesIn + "|" + layers[i].numNodesOut + ( i == layers.Length - 1 ? "" : ",");
-            }
             o.Add(s);
             foreach(Layer layer in layers)
             {
@@ -61,13 +60,18 @@ namespace ActualColorAI
             {
                 if(i==0)
                 {
+                    Layer.activation = line;
+                    i++; continue;
+                }
+                if(i==1)
+                {
                     n = new Network();
                     var q = line.Split(',');
                     n.layers = new Layer[q.Length];
                     for(int asd = 0; asd < q.Length; asd++)
                     {
                         string[] sizes = q[asd].Split('|');
-                        n.layers[asd] = new Layer(int.Parse(sizes[0]), int.Parse(sizes[1]));
+                        n.layers[asd] = new Layer(int.Parse(sizes[0]), int.Parse(sizes[1]), false);
                     }
                     i++; continue; 
                 }
@@ -108,6 +112,7 @@ namespace ActualColorAI
                 if(mode == 0) // weights
                 {
                     curWeights[x, y] = double.Parse(line);
+                    Console.WriteLine(l + ":" + curWeights[x,y]);
                     x++;
                     if(x >= cl.numNodesIn)
                     {
@@ -137,7 +142,10 @@ namespace ActualColorAI
                 }
                 i++;
             }
-            //catch { Console.WriteLine(i); }
+            cl.weights = curWeights;
+            cl.biases = curBiases;
+            cl.costGradientB = curCBiases;
+            cl.costGradientW = curCWeights;
             return n;
         }
     }
